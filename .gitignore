@@ -3,3 +3,4 @@ target/
 *.snap.new
 docs/superpowers/
 docs/reviews/
+dist/

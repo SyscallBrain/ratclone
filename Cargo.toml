@@ -7,10 +7,50 @@ authors = ["Tiago Correia"]
 license = "MIT"
 description = "A keyboard-driven terminal UI for rclone"
 readme = "README.md"
+homepage = "https://syscallbrain.github.io/ratclone/"
+documentation = "https://syscallbrain.github.io/ratclone/"
 repository = "https://github.com/SyscallBrain/ratclone"
 keywords = ["rclone", "tui", "terminal", "cloud", "file-manager"]
 categories = ["command-line-utilities"]
-exclude = ["/.github", "/packaging", "/tests/snapshots/*.snap.new", "/deny.toml"]
+exclude = ["/.github", "/book", "/docs", "/scripts", "/packaging", "/tests/snapshots/*.snap.new", "/deny.toml"]
+
+# Linux packages built from the static release binary by scripts/dist.sh
+# (cargo-deb, cargo-generate-rpm); see docs/RELEASE.md.
+[package.metadata.deb]
+maintainer = "Tiago Correia"
+copyright = "2026, Tiago Correia"
+license-file = ["LICENSE", "0"]
+section = "utils"
+priority = "optional"
+# The release binary is static (musl), so it needs no libraries. rclone is only
+# suggested: Debian and Ubuntu ship 1.60, older than the 1.68 ratclone needs,
+# so users install it from rclone.org (see the installation guide). Without
+# `depends`, cargo-deb finds no shared libraries in the static binary and
+# writes no Depends line.
+suggests = "rclone"
+extended-description = """\
+ratclone browses every rclone account and the local disk with Vim keys, in one \
+pane or two side by side. It copies and moves between them, renames and \
+deletes, and runs every transfer as an rclone job that keeps going in the \
+background, even after you quit. It needs rclone v1.68.0 or newer."""
+assets = [
+    ["target/release/ratclone", "usr/bin/", "755"],
+    ["README.md", "usr/share/doc/ratclone/", "644"],
+    ["CHANGELOG.md", "usr/share/doc/ratclone/", "644"],
+]
+
+[package.metadata.generate-rpm]
+auto-req = "no"
+summary = "A keyboard-driven terminal UI for rclone"
+assets = [
+    { source = "target/release/ratclone", dest = "/usr/bin/ratclone", mode = "755" },
+    { source = "README.md", dest = "/usr/share/doc/ratclone/README.md", mode = "644", doc = true },
+    { source = "CHANGELOG.md", dest = "/usr/share/doc/ratclone/CHANGELOG.md", mode = "644", doc = true },
+    { source = "LICENSE", dest = "/usr/share/licenses/ratclone/LICENSE", mode = "644", doc = true },
+]
+
+[package.metadata.generate-rpm.requires]
+rclone = ">= 1.68.0"
 
 [dependencies]
 async-trait = "0.1.92"
@@ -37,3 +77,6 @@ unicode-width = "0.2"
 [dev-dependencies]
 insta = "1.49"
 tempfile = "3.27"
+
+[profile.release]
+strip = true

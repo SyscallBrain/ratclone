@@ -1,6 +1,7 @@
 # Maintainer: Tiago Correia
 #
-# AUR package built from the source of the release tag.
+# AUR package built from the source of the release tag. scripts/aur.sh fills
+# in pkgver and the checksum and writes .SRCINFO; see docs/RELEASE.md.
 pkgname=ratclone
 pkgver=0.1.0
 pkgrel=1
@@ -41,4 +42,5 @@ package() {
   install -Dm755 target/release/ratclone "$pkgdir/usr/bin/ratclone"
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  install -Dm644 CHANGELOG.md "$pkgdir/usr/share/doc/$pkgname/CHANGELOG.md"
 }

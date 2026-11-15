@@ -1,0 +1,23 @@
+# Maintainer: Tiago Correia
+# Template for the release packages: scripts/arch-package.sh fills in the
+# version, the archive and its checksum. packaging/aur/ has the AUR packages.
+pkgname=ratclone
+pkgver=@VERSION@
+pkgrel=1
+pkgdesc="A keyboard-driven terminal UI for rclone"
+arch=('x86_64' 'aarch64')
+url="https://github.com/SyscallBrain/ratclone"
+license=('MIT')
+depends=('rclone')
+optdepends=('ttf-nerd-fonts-symbols: icons (or set icons = "ascii")')
+options=('!strip' '!debug')
+source=("@TARBALL@")
+sha256sums=('@SHA256@')
+
+package() {
+  cd "${source[0]%.tar.gz}"
+  install -Dm755 ratclone "$pkgdir/usr/bin/ratclone"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  install -Dm644 CHANGELOG.md "$pkgdir/usr/share/doc/$pkgname/CHANGELOG.md"
+}
