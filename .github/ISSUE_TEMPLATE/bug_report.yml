@@ -1,0 +1,77 @@
+name: Bug report
+description: Something does not work as described
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. A few things first:
+
+        - Remove account names, paths, tokens and other private details from what you paste.
+        - For a security problem, use a [private advisory](https://github.com/SyscallBrain/ratclone/security/advisories/new) instead (see SECURITY.md).
+        - Many failures come from rclone itself: try the same thing with the `rclone` command the app shows for the operation.
+  - type: input
+    id: version
+    attributes:
+      label: ratclone version
+      description: The output of `ratclone --version`.
+      placeholder: ratclone 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: rclone
+    attributes:
+      label: rclone version
+      description: The first line of `rclone version`.
+      placeholder: rclone v1.71.0
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install ratclone?
+      options:
+        - AUR (ratclone)
+        - cargo install
+        - Built from a clone of the repository
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: backend
+    attributes:
+      label: Remote type
+      description: The rclone backend involved, if any (Google Drive, S3, SFTP, local disk …).
+      placeholder: drive
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did (keys pressed), what you expected, and what happened instead. A screenshot helps with drawing problems.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: If it also happens in demo mode (`ratclone --demo`), say so.
+      placeholder: |
+        1. Open an account
+        2. Press …
+  - type: textarea
+    id: log
+    attributes:
+      label: Last lines of the rcd log
+      description: From `~/.local/state/ratclone/rcd.log`, for failed transfers or listings. Check it for private paths first.
+      render: text
+  - type: input
+    id: os
+    attributes:
+      label: Distribution
+      placeholder: Arch Linux, Debian 13, Fedora 43 …
+  - type: input
+    id: terminal
+    attributes:
+      label: Terminal emulator
+      description: Say if it runs inside tmux or screen, or over SSH.
+      placeholder: kitty 0.40, inside tmux 3.5

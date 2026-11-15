@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question
+    url: https://github.com/SyscallBrain/ratclone/discussions/categories/q-a
+    about: Questions about installing or using ratclone.
+  - name: Report a security vulnerability
+    url: https://github.com/SyscallBrain/ratclone/security/advisories/new
+    about: Please report security problems privately.

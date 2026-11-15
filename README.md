@@ -213,6 +213,13 @@ green yellow orange red teal`).
 - `~/.local/state/ratclone/lists/` — file lists for multi-file pastes
 - `~/.cache/ratclone/scans/` — Space scans
 
+## Contributing
+
+Bug reports, ideas and pull requests are welcome; questions go to
+[Discussions](https://github.com/SyscallBrain/ratclone/discussions). Read
+[CONTRIBUTING.md](CONTRIBUTING.md) for how to build and test, and
+[CHANGELOG.md](CHANGELOG.md) for what changed in each release.
+
 ## License
 
 MIT © 2026 Tiago Correia — see [LICENSE](LICENSE).

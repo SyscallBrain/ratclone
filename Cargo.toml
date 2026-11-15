@@ -10,6 +10,7 @@ readme = "README.md"
 repository = "https://github.com/SyscallBrain/ratclone"
 keywords = ["rclone", "tui", "terminal", "cloud", "file-manager"]
 categories = ["command-line-utilities"]
+exclude = ["/.github", "/packaging", "/tests/snapshots/*.snap.new", "/deny.toml"]
 
 [dependencies]
 async-trait = "0.1.92"
