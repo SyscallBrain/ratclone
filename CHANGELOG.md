@@ -6,6 +6,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Packages for every release: `.deb` (Debian, Ubuntu), `.rpm` (Fedora,
+  openSUSE, RHEL) and Arch `.pkg.tar.zst` for x86_64 and aarch64, a static
+  (musl) binary that runs on any Linux, `SHA256SUMS` and signed build
+  provenance (`gh attestation verify`).
+- `ratclone-bin` in the AUR, with the release binaries.
+- A user guide at <https://syscallbrain.github.io/ratclone/>, and a
+  presentation at the top of the README.
+
 ## [0.1.0] - 2026-11-15
 
 First release.

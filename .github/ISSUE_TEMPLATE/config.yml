@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: User guide
+    url: https://syscallbrain.github.io/ratclone/
+    about: Installation, key bindings, configuration and troubleshooting.
   - name: Ask a question
     url: https://github.com/SyscallBrain/ratclone/discussions/categories/q-a
     about: Questions about installing or using ratclone.

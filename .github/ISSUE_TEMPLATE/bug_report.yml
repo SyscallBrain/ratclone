@@ -31,7 +31,11 @@ body:
     attributes:
       label: How did you install ratclone?
       options:
-        - AUR (ratclone)
+        - AUR (ratclone or ratclone-bin)
+        - .deb package
+        - .rpm package
+        - Arch package from the release page
+        - Release tarball
         - cargo install
         - Built from a clone of the repository
         - Other

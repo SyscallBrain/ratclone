@@ -32,8 +32,24 @@ cargo test
 
 - UI changes update [insta](https://insta.rs) snapshots in `tests/snapshots/`.
   Review them with `cargo insta review` and commit the accepted ones.
-- If you change behaviour, keys or settings, update the README.
+- If you change behaviour, keys or settings, update the user guide in
+  `book/src/` (preview with `mdbook serve book --open`) and, for the main
+  keys and features, the README.
 - Add a line under `[Unreleased]` in [CHANGELOG.md](CHANGELOG.md).
+
+## Screenshots and the presentation
+
+The screenshots in `book/src/images/` and the presentation GIF at the top of
+the README come from `--demo` mode. To record the GIF again after a UI change:
+
+```sh
+cargo build --release
+uv run scripts/presentation.py     # writes book/src/images/demo.gif
+```
+
+It needs [uv](https://docs.astral.sh/uv/), headless Chrome or Chromium,
+ffmpeg and (optionally) gifsicle. `scripts/make-logo.py` regenerates the
+logo files.
 
 ## Code guidelines
 
