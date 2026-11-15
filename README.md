@@ -36,6 +36,9 @@ cargo install ratclone
 
 Or from a clone of this repository, with `cargo install --path .`.
 
+On Arch Linux it is in the AUR as [`ratclone`](https://aur.archlinux.org/packages/ratclone):
+`paru -S ratclone`.
+
 Try it without touching your accounts:
 
 ```sh
