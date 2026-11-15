@@ -1,0 +1,21 @@
+[book]
+title = "ratclone"
+description = "A keyboard-driven terminal UI for rclone"
+authors = ["Tiago Correia"]
+language = "en"
+src = "src"
+
+[build]
+build-dir = "build"
+create-missing = false
+
+[output.html]
+default-theme = "navy"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/SyscallBrain/ratclone"
+edit-url-template = "https://github.com/SyscallBrain/ratclone/edit/main/book/{path}"
+site-url = "/ratclone/"
+additional-css = ["custom.css"]
+
+[output.html.search]
+enable = true
