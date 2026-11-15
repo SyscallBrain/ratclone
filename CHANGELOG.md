@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-15
+
 ### Added
 
 - Packages for every release: `.deb` (Debian, Ubuntu), `.rpm` (Fedora,
@@ -37,5 +39,6 @@ First release.
 - Published on [crates.io](https://crates.io/crates/ratclone) and in the
   [AUR](https://aur.archlinux.org/packages/ratclone).
 
-[Unreleased]: https://github.com/SyscallBrain/ratclone/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/SyscallBrain/ratclone/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/SyscallBrain/ratclone/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/SyscallBrain/ratclone/releases/tag/v0.1.0

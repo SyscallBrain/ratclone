@@ -3,7 +3,7 @@
 # AUR package built from the source of the release tag. scripts/aur.sh fills
 # in pkgver and the checksum and writes .SRCINFO; see docs/RELEASE.md.
 pkgname=ratclone
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="A keyboard-driven terminal UI for rclone"
 arch=('x86_64' 'aarch64')
