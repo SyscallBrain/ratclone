@@ -1,0 +1,20 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 50, 16)"
+---
+╭ Settings ──────────────────────────────────────╮
+│ APPEARANCE                                     │
+│ ▸ Theme                  ‹ Tokyo Night ›       │
+│   Transparent background   theme default       │
+│   Icons                    ASCII               │
+│   Key hints                shown               │
+│   Info panel               shown               │
+│   Info panel with two panes  focused pane      │
+│                                                │
+│ BEHAVIOUR                                      │
+│   Start in                 last location       │
+│   Default sort             name                │
+│   Hidden files             off                 │
+│────────────────────────────────────────────────│
+│ Colours of the whole app. ← → to try them live.│
+╰─────────────────────────── ↵ save · Esc cancel ╯

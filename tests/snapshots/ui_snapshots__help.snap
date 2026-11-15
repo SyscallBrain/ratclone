@@ -1,0 +1,38 @@
+---
+source: tests/ui_snapshots.rs
+expression: out
+---
+  ratclo╭ Keys ────────────────────────────────────────────────────────────────────────────╮
+ Account│ Navigation                              Files                                    │2 items
+▌ ~ loca│   j ↓        down                         Space     mark                         │odified
+  ● pers│   k ↑        up                           v V       visual select                │5-08-01
+  ● work│   h ← Bksp   parent folder                y         copy                         │5-08-01
+  ● medi│   l → Enter  open                         x         cut                          │
+  ● arch│   gg         first entry                  p         paste                        │
+  ● shar│   G          last entry                   dd D      delete                       │
+        │   Ctrl-d     half page down               r cw      rename                       │
+        │   Ctrl-u     half page up                 o a       new folder                   │
+        │   -          previous folder              > F5      copy to other pane           │
+        │   Tab        next pane / accounts         F6        move to other pane           │
+        │   Shift-Tab  focus back                                                          │
+        │   |          two panes                  Transfers                                │
+        │   /          filter                       T         transfers                    │
+        │   n          next match                   s x       stop                         │
+        │   N          previous match               Enter r   resume                       │
+        │   sn         sort by name                 c         clear finished               │
+        │   ss         sort by size                 dd D      remove from list             │
+        │   sm         sort by modified             C         clear all but running        │
+        │   sr         reverse sort                                                        │
+        │   .          show hidden                App                                      │
+        │   R          refresh                      ?         help                         │
+        │   Ctrl-n     next account                 q Ctrl-c  quit                         │
+        │   Ctrl-p     previous account             Esc       clear selection              │
+── local│                                           ,         settings                     │· now ──
+  STORAG│ Accounts                                                                         │
+  Usage │   r R        refresh usage              Tabs                                     │
+        │   a          add account                  gt        next tab                     │
+        │   e          edit account                 gT        previous tab                 │
+        │   A          re-authorise                 Alt-1     Files tab                    │00
+        ╰───────────────────────────────────────────────────── j/k scroll 0/19  Esc closes ╯
+                                   │  0 active · 0 done today    │
+ y copy  x cut  p paste  r rename  dd delete  o new folder  T transfers  ? help

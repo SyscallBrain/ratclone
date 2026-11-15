@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ personal:/
+  ~ local       – │
+▌ ● personal  62% │
+  ● work      18% │
+  ● media     40% │                               personal has not been scanned
+  ● archive   91% │                                     ~9.3 GiB to read
+  ● shared     4% │
+                  │                      Enter scan · may take minutes on large accounts
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+── personal Google Drive ───────────────────────────────────────────────────────── i hide · R refresh · now ──
+  STORAGE                          │  ACTIVITY                        60s  │  SELECTED
+  62% 9.3 GiB of 15.0 GiB          │  idle                                 │
+                                   │                                       │
+  ██████████████████████████████   │                                       │
+                                   │                                       │
+  * Used 9.3 GiB  * Free 5.7 GiB   │                                       │
+                                   │  0 active · 0 done today              │
+ Enter scan  Tab accounts  ? help

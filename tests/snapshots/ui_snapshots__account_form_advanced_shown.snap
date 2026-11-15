@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ local: home › demo                                                                2 items
+▌ ~ local       – │    Name                                                                  Size    Modified
+  ● personal  62% │  ▸ Documents                                                                   2025-08-01
+  ● work      18% │  ▸ Downloads                                                                   2025-08-01
+  ● media     40% │
+  ● archive   91% │╭ New account · Mega ──────────────────────────────────────────────────╮
+  ● shared     4% ││   Name   mega                                                        │
+                  ││   user                                                               │
+                  ││   pass                                                               │
+                  ││   2fa                                                                │
+                  ││ ▸ debug  ‹ false ›                                                   │
+                  ││                                                                      │
+                  ││──────────────────────────────────────────────────────────────────────│
+                  ││ Output more debug from Mega.                                         │
+                  ││                                                                      │
+                  │╰───────────────────────── ^s save · Tab advanced · F1 help · Esc back ╯
+                  │
+                  │
+                  │
+                  │
+── local Local disk ────────────────────────────────────────────────────────────── i hide · R refresh · now ──
+  STORAGE                          │  ACTIVITY                        60s  │  SELECTED
+  Usage unknown                    │  idle                                 │  ▸ Documents
+                                   │                                       │
+                                   │                                       │  Items     —
+                                   │                                       │  Modified  2025-08-01 11:00
+                                   │                                       │
+                                   │  0 active · 0 done today              │
+ l open  a add account  r refresh usage  Tab files  T transfers  ? help  q quit

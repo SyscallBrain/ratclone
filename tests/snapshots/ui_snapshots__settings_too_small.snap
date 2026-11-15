@@ -1,0 +1,7 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 38, 10)"
+---
+
+    Terminal too small for settings
+               Esc close

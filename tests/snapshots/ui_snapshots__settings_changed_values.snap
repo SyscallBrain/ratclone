@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ local: home › demo                                                                2 items
+▌ ~ local       – │    ╭ Settings ────────────────────────────────────────────────────╮      Size    Modified
+  ● personal  62% │  ▸ │ APPEARANCE                                                   │            2025-08-01
+  ● work      18% │  ▸ │ ▸ Theme                  ‹ Tokyo Night Storm ›               │            2025-08-01
+  ● media     40% │    │   Transparent background   theme default                     │
+  ● archive   91% │    │   Icons                    ASCII                             │
+  ● shared     4% │    │   Key hints                shown                             │
+                  │    │   Info panel               shown                             │
+                  │    │   Info panel with two panes  focused pane                    │
+                  │    │                                                              │
+                  │    │ BEHAVIOUR                                                    │
+                  │    │   Start in                 last location                     │
+                  │    │   Default sort             name                              │
+                  │    │   Hidden files             off                               │
+                  │    │   On quit with transfers   ask                               │
+                  │    │                                                              │
+                  │    │ TRANSFERS & SPACE                                            │
+                  │    │   Bandwidth limit          off                               │
+                  │    │   Scan in parallel         auto (4, Mega 2)                  │
+                  │    │                                                              │
+── local Local disk ───│──────────────────────────────────────────────────────────────│de · R refresh · now ──
+  STORAGE              │ Colours of the whole app. ← → to try them live.              │
+  Usage unknown        ╰───────────────────────────────────────── ↵ save · Esc cancel ╯ts
+                                   │                                       │
+                                   │                                       │  Items     —
+                                   │                                       │  Modified  2025-08-01 11:00
+                                   │                                       │
+                                   │  0 active · 0 done today              │
+ y copy  x cut  p paste  r rename  dd delete  o new folder  T transfers  ? help

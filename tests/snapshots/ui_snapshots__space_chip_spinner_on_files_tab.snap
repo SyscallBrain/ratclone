@@ -1,0 +1,5 @@
+---
+source: tests/ui_snapshots.rs
+expression: top
+---
+  ratclone    1 Files   2 Space ⠋   3 Transfers

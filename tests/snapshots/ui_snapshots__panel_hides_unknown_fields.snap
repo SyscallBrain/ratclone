@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ media:                                                                             1 item
+  ~ local       – │    Name                                                                  Size    Modified
+  ● personal  62% │  ▸ Music                                                                       2025-08-01
+  ● work      18% │
+▌ ● media     40% │
+  ● archive   91% │
+  ● shared     4% │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+── media Mega ──────────────────────────────────────────────────────────────────── i hide · R refresh · now ──
+  STORAGE                          │  ACTIVITY                        60s  │  SELECTED
+  40% 8.0 GiB of 20.0 GiB          │  idle                                 │  ▸ Music
+                                   │                                       │
+  ██████████████████████████████   │                                       │  Items     —
+                                   │                                       │  Modified  2025-08-01 11:00
+  * Used 8.0 GiB  * Free 12.0 GiB  │                                       │
+                                   │  0 active · 0 done today              │
+ y copy  x cut  p paste  r rename  dd delete  o new folder  T transfers  ? help

@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ personal:/Photos                                         3.8 GiB · 33 files · scanned now
+  ~ local       – │
+▌ ● personal  62% │ ▍ 2023                  1.3 GiB  █████████████████████████████████   83%           1 file
+  ● work      18% │ ▍ 2024                204.1 MiB  █████····························   13%          2 files
+  ● media     40% │ ▍ 2025                 78.1 MiB  █▉·······························    5%         20 files
+  ● archive   91% │
+  ● shared     4% │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+── 2023 selected ─────────────────────────────────────────────────────────────── l open · h up · R rescan ──
+  2023 1.3 GiB · 1 file · 0 folders · 34% of personal:/
+
+  BY TYPE                                                LARGEST FILES
+  ████████████████████████████████████████████           drone_flight.mp4                            1.3 GiB
+  * Video 1.3 GiB
+
+
+ j/k move  l open  h up  R rescan  gf open in Files  / filter  s sort  ? help

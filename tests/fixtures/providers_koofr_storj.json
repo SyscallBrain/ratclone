@@ -1,0 +1,402 @@
+{
+ "providers": [
+  {
+   "Name": "storj",
+   "Description": "Storj Decentralized Cloud Storage",
+   "Prefix": "storj",
+   "Options": [
+    {
+     "Name": "provider",
+     "FieldName": "",
+     "Help": "Choose an authentication method.",
+     "Default": "existing",
+     "Value": null,
+     "Examples": [
+      {
+       "Value": "existing",
+       "Help": "Use an existing access grant."
+      },
+      {
+       "Value": "new",
+       "Help": "Create a new access grant from satellite address, API key, and passphrase."
+      }
+     ],
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "existing",
+     "ValueStr": "existing",
+     "Type": "string"
+    },
+    {
+     "Name": "access_grant",
+     "FieldName": "",
+     "Help": "Access grant.",
+     "Provider": "existing",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": true,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "satellite_address",
+     "FieldName": "",
+     "Help": "Satellite address.\n\nCustom satellite address should match the format: `<nodeid>@<address>:<port>`.",
+     "Provider": "new",
+     "Default": "us1.storj.io",
+     "Value": null,
+     "Examples": [
+      {
+       "Value": "us1.storj.io",
+       "Help": "US1"
+      },
+      {
+       "Value": "eu1.storj.io",
+       "Help": "EU1"
+      },
+      {
+       "Value": "ap1.storj.io",
+       "Help": "AP1"
+      }
+     ],
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "us1.storj.io",
+     "ValueStr": "us1.storj.io",
+     "Type": "string"
+    },
+    {
+     "Name": "api_key",
+     "FieldName": "",
+     "Help": "API key.",
+     "Provider": "new",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": true,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "passphrase",
+     "FieldName": "",
+     "Help": "Encryption passphrase.\n\nTo access existing objects enter passphrase used for uploading.",
+     "Provider": "new",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": true,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "description",
+     "FieldName": "",
+     "Help": "Description of the remote.",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": true,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    }
+   ],
+   "CommandHelp": null,
+   "Aliases": [
+    "tardigrade"
+   ],
+   "Hide": false,
+   "MetadataInfo": null,
+   "Overview": {
+    "Backend": "storj",
+    "Name": "Storj",
+    "Tier": "Tier 1",
+    "Maintainers": "Core",
+    "FeaturesScore": 4,
+    "IntegrationTests": "Passing",
+    "DataIntegrity": "Modtime",
+    "Performance": "High",
+    "Adoption": "Widely used",
+    "Docs": "Full",
+    "Security": "High",
+    "Virtual": false,
+    "Remote": "TestStorj:",
+    "Features": [
+     "BucketBased",
+     "BucketBasedRootOK",
+     "Copy",
+     "ListR",
+     "Move",
+     "PublicLink",
+     "Purge",
+     "PutStream"
+    ],
+    "Hashes": [],
+    "Precision": 1
+   }
+  },
+  {
+   "Name": "koofr",
+   "Description": "Koofr, Digi Storage and other Koofr-compatible storage providers",
+   "Prefix": "koofr",
+   "Options": [
+    {
+     "Name": "provider",
+     "FieldName": "",
+     "Help": "Choose your storage provider.",
+     "Default": "",
+     "Value": null,
+     "Examples": [
+      {
+       "Value": "koofr",
+       "Help": "Koofr, https://app.koofr.net/"
+      },
+      {
+       "Value": "digistorage",
+       "Help": "Digi Storage, https://storage.rcs-rds.ro/"
+      },
+      {
+       "Value": "other",
+       "Help": "Any other Koofr API compatible storage service"
+      }
+     ],
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "endpoint",
+     "FieldName": "",
+     "Help": "The Koofr API endpoint to use.",
+     "Provider": "other",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": true,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "mountid",
+     "FieldName": "",
+     "Help": "Mount ID of the mount to use.\n\nIf omitted, the primary mount is used.",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": true,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "setmtime",
+     "FieldName": "",
+     "Help": "Does the backend support setting modification time.\n\nSet this to false if you use a mount ID that points to a Dropbox or Amazon Drive backend.",
+     "Default": true,
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": true,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "true",
+     "ValueStr": "true",
+     "Type": "bool"
+    },
+    {
+     "Name": "user",
+     "FieldName": "",
+     "Help": "Your user name.",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": true,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": true,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "password",
+     "FieldName": "",
+     "Help": "Your password for rclone generate one at https://app.koofr.net/app/admin/preferences/password.",
+     "Provider": "koofr",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": true,
+     "IsPassword": true,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "password",
+     "FieldName": "",
+     "Help": "Your password for rclone generate one at https://storage.rcs-rds.ro/app/admin/preferences/password.",
+     "Provider": "digistorage",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": true,
+     "IsPassword": true,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "password",
+     "FieldName": "",
+     "Help": "Your password for rclone (generate one at your service's settings page).",
+     "Provider": "other",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": true,
+     "IsPassword": true,
+     "NoPrefix": false,
+     "Advanced": false,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    },
+    {
+     "Name": "encoding",
+     "FieldName": "",
+     "Help": "The encoding for the backend.\n\nSee the [encoding section in the overview](/overview/#encoding) for more info.",
+     "Default": 50438146,
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": true,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "Slash,BackSlash,Del,Ctl,InvalidUtf8,Dot",
+     "ValueStr": "Slash,BackSlash,Del,Ctl,InvalidUtf8,Dot",
+     "Type": "Encoding"
+    },
+    {
+     "Name": "description",
+     "FieldName": "",
+     "Help": "Description of the remote.",
+     "Default": "",
+     "Value": null,
+     "Hide": 0,
+     "Required": false,
+     "IsPassword": false,
+     "NoPrefix": false,
+     "Advanced": true,
+     "Exclusive": false,
+     "Sensitive": false,
+     "DefaultStr": "",
+     "ValueStr": "",
+     "Type": "string"
+    }
+   ],
+   "CommandHelp": null,
+   "Aliases": null,
+   "Hide": false,
+   "MetadataInfo": null,
+   "Overview": {
+    "Backend": "koofr",
+    "Name": "Koofr",
+    "Tier": "Tier 2",
+    "Maintainers": "Core",
+    "FeaturesScore": 5,
+    "IntegrationTests": "Passing",
+    "DataIntegrity": "Hash",
+    "Performance": "High",
+    "Adoption": "Widely used",
+    "Docs": "Full",
+    "Security": "High",
+    "Virtual": false,
+    "Remote": "TestKoofr:",
+    "Features": [
+     "About",
+     "CanHaveEmptyDirectories",
+     "CaseInsensitive",
+     "Copy",
+     "DirMove",
+     "Move",
+     "PublicLink",
+     "PutStream"
+    ],
+    "Hashes": [
+     "md5"
+    ],
+    "Precision": 1000000
+   }
+  }
+ ]
+}

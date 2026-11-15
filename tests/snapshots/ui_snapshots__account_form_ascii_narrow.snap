@@ -1,0 +1,24 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 60, 20)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts
+▌ ~ local                                                 –
+╭ New account · Encrypt/Decrypt a remote ──────────────────╮
+│ ▸ Name                 crypt█                            │
+│   remote                                                 │
+│   filename_encryption  standard                          │
+│   password                                               │
+│                                                          │
+│──────────────────────────────────────────────────────────│
+│ The account's name, used as name: in paths.              │
+│                                                          │
+╰───────────── ^s save · Tab advanced · F1 help · Esc back ╯
+
+
+
+
+
+ local                                               ↑0 B/s
+ l open  a add account  r refresh usage  Tab files  T

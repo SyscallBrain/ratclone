@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ Transfers  1 running · 1 in history                                               T close
+  ~ local       – │ ⠹ copy a very long file n…lumn.tar.gz +2 → media:/Music         25%   12.0 MiB/s     0:41
+  ● personal  62% │
+  ● work      18% │
+▌ ● media     40% │
+  ● archive   91% │
+  ● shared     4% │
+                  │
+                  │
+                  │
+                  │───────────────────────────────────────────────────────────────────────────────────────────
+                  │ ⠹ running  local:/home/demo/Downloads → media:/Music
+                  │   ✓ a very long file name that will c… in the column.tar.gz                      94.2 MiB
+                  │   ⠹ video.mkv                                               ███████▎░░░░  60%     1.4 GiB
+                  │   · 日本語のファイル名.txt                                                        1.2 KiB
+                  │   $ rclone copyto '/home/demo/Downloads/a very lo…not fit in the column.tar.gz'  (+2 more)
+                  │
+                  │
+                  │
+                  │
+── media Mega ──────────────────────────────────────────────────────────────────── i hide · R refresh · now ──
+  STORAGE                          │  ACTIVITY                        60s  │  SELECTED
+  40% 8.0 GiB of 20.0 GiB          │  ↑ 0 B/s                              │  a very l…r.gz +2 → media:/Music
+                                   │                                       │  Kind      copy
+  ██████████████████████████████   │                                       │  From      local:/home/demo/Dow…
+                                   │                                       │  To        media:/Music
+  * Used 8.0 GiB  * Free 12.0 GiB  │                                       │  Bytes     381.2 MiB / 1.5 GiB
+                                   │  1 active · 0 done today              │  Started   2025-08-01
+ j/k move  s stop  Enter resume  c clear finished  dd remove  T close  ? help

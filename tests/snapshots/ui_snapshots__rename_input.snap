@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ local: home › demo › Downloads                                                    6 items
+▌ ~ local       – │    Name                                                                  Size    Modified
+  ● personal  62% │  ▸ iso                                                                         2025-08-01
+  ● work      18% │  · a very long file name that will certainly not fit in the colum…   94.2 MiB  2025-08-01
+  ● media     40% │  · it's "quoted" & spaced.txt                                            42 B  2025-08-01
+  ● archive   91% │  · summary.pdf                                                        2.1 MiB  2025-08-01
+  ● shared     4% │  · video.mkv                                                          1.4 GiB  2025-08-01
+                  │  · 日╭ Rename file ─────────────────────────────────────────────╮     1.2 KiB  2025-08-01
+                  │      │                                                          │
+                  │      │ summary.pdf                                              │
+                  │      │                                                          │
+                  │      │ Enter save  ·  Esc cancel                                │
+                  │      ╰──────────────────────────────────────────────────────────╯
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+── local Local disk ────────────────────────────────────────────────────────────── i hide · R refresh · now ──
+  STORAGE                          │  ACTIVITY                        60s  │  SELECTED
+  Usage unknown                    │  idle                                 │  · summary.pdf
+                                   │                                       │
+                                   │                                       │  Size      2.1 MiB
+                                   │                                       │  Type      application/pdf
+                                   │                                       │  Modified  2025-08-01 11:00
+                                   │  0 active · 0 done today              │  Folder    0.1% of Downloads/
+ y copy  x cut  p paste  r rename  dd delete  o new folder  T transfers  ? help

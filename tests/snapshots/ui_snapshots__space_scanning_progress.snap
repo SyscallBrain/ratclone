@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space ⠋   3 Transfers
+ Accounts         │ personal:/                        ⠋ /  ░░░░░░░░░░░░ ~0%  0 files · 0 B · 0:48  Esc cancel
+  ~ local       – │
+▌ ● personal  62% │ ▍ Backups                   0 B  ·································    0%          0 files
+  ● work      18% │ ▍ Documents                 0 B  ·································    0%          0 files
+  ● media     40% │ ▍ Music                     0 B  ·································    0%          0 files
+  ● archive   91% │ ▍ Photos                    0 B  ·································    0%          0 files
+  ● shared     4% │ ▍ Videos                    0 B  ·································    0%          0 files
+                  │ ▍ Work                      0 B  ·································    0%          0 files
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+                  │
+── ⠋ scanning personal · 1 folder · 0 files ──────────────────────────────────── l open · h up · R rescan ──
+  Backups 0 B · 0 files · 0 folders · 0% of personal:/
+
+
+
+
+
+
+ j/k move  l open  h up  R rescan  gf open in Files  / filter  s sort  ? help

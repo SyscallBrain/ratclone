@@ -1,0 +1,34 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 30)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ local: home › demo                                                                2 items
+▌ ~ local       – │╭ New account ─────────────────────────────────────────────────────────╮  Size    Modified
+  ● personal  62% ││ Type  █                                                              │        2025-08-01
+  ● work      18% ││ ▸ drive          Google Drive                                        │        2025-08-01
+  ● media     40% ││   dropbox        Dropbox                                             │
+  ● archive   91% ││   mega           Mega                                                │
+  ● shared     4% ││   alias          Alias for an existing remote                        │
+                  ││   crypt          Encrypt/Decrypt a remote                            │
+                  ││   onedrive       Microsoft OneDrive                                  │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+                  ││                                                                      │
+── local Local disk│                                                                      │ R refresh · now ──
+  STORAGE          │                                                                      │
+  Usage unknown    │──────────────────────────────────────────────────────────────────────│
+                   │ Google Drive                                                         │
+                   ╰───────────────────────────────────────────────── ↵ next · Esc cancel ╯
+                                   │                                       │  Modified  2025-08-01 11:00
+                                   │                                       │
+                                   │  0 active · 0 done today              │
+ l open  a add account  r refresh usage  Tab files  T transfers  ? help  q quit

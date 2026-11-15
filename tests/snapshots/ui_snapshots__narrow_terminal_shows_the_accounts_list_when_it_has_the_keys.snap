@@ -1,0 +1,28 @@
+---
+source: tests/ui_snapshots.rs
+expression: text
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts
+▌ ~ local                                                 –
+  ● personal                                            62%
+  ● work                                                18%
+  ● media                                               40%
+  ● archive                                             91%
+  ● shared                                               4%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ personal ████████████████ 62% · 9.3 GiB/15.0 GiB
+ l open  a add account  r refresh usage  Tab files  T

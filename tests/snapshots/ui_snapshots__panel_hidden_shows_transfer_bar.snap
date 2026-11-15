@@ -1,0 +1,18 @@
+---
+source: tests/ui_snapshots.rs
+expression: "render(&mut app, 110, 14)"
+---
+  ratclone    1 Files   2 Space   3 Transfers
+ Accounts         │ local: home › demo › Downloads                                                    6 items
+▌ ~ local       – │    Name                                                                  Size    Modified
+  ● personal  62% │  ▸ iso                                                                         2025-08-01
+  ● work      18% │  · a very long file name that will certainly not fit in the colum…   94.2 MiB  2025-08-01
+  ● media     40% │  · it's "quoted" & spaced.txt                                            42 B  2025-08-01
+  ● archive   91% │  · summary.pdf                                                        2.1 MiB  2025-08-01
+  ● shared     4% │  · video.mkv                                                          1.4 GiB  2025-08-01
+                  │  · 日本語のファイル名.txt                                             1.2 KiB  2025-08-01
+                  │
+                  │
+                  │
+ ⠙ Copying video.mkv → work:/  ████░░░░░░░░░░░░  25%  12.0 MiB/s  ETA 0:41
+ 1 item copied  p paste  Esc clear
