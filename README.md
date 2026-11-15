@@ -27,11 +27,13 @@ delete, and keep transfers running in the background — even after you quit.
 
 ## Install
 
-With Rust 1.88 or newer:
+With Rust 1.88 or newer, from [crates.io](https://crates.io/crates/ratclone):
 
 ```sh
-cargo install --path .
+cargo install ratclone
 ```
+
+Or from a clone of this repository, with `cargo install --path .`.
 
 Try it without touching your accounts:
 
