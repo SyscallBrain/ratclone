@@ -37,20 +37,6 @@ cargo test
   keys and features, the README.
 - Add a line under `[Unreleased]` in [CHANGELOG.md](CHANGELOG.md).
 
-## Screenshots and the presentation
-
-The screenshots in `book/src/images/` and the presentation GIF at the top of
-the README come from `--demo` mode. To record the GIF again after a UI change:
-
-```sh
-cargo build --release
-uv run scripts/presentation.py     # writes book/src/images/demo.gif
-```
-
-It needs [uv](https://docs.astral.sh/uv/), headless Chrome or Chromium,
-ffmpeg and (optionally) gifsicle. `scripts/make-logo.py` regenerates the
-logo files.
-
 ## Code guidelines
 
 - Talk to rclone through the rc API, never by building shell commands.

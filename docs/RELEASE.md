@@ -6,9 +6,8 @@
 3. The new version is in `Cargo.toml` (and `Cargo.lock`), in
    `packaging/aur/*/PKGBUILD` and in the file names of the README and
    `book/src/installation.md`.
-4. The book (`book/src/`) matches the behaviour; the screenshots and the
-   presentation GIF are regenerated if the UI changed
-   (`cargo build --release && uv run scripts/presentation.py`).
+4. The book (`book/src/`) matches the behaviour; screenshots and the
+   presentation GIF are regenerated if the UI changed.
 5. Tag `vX.Y.Z` and push the tag. The Release workflow builds static (musl)
    binaries for x86_64 and aarch64, the `.tar.gz`, `.deb`, `.rpm` and Arch
    `.pkg.tar.zst` files and `SHA256SUMS`, installs each x86_64 package on
