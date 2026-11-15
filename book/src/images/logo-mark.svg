@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="77" height="64" viewBox="0 0 76.95 64.00" role="img" aria-label="ratclone">
+  <title>ratclone</title>
+  <g transform="translate(0.00,0.00) scale(0.19048) translate(-56,-64)">
+    <!-- cloud behind -->
+    <g fill="#24283b">
+    <circle cx="190" cy="170" r="52"/>
+    <circle cx="262" cy="140" r="70"/>
+    <circle cx="336" cy="176" r="48"/>
+    <rect x="138" y="160" width="246" height="66" rx="33"/>
+    </g>
+    <!-- tail: long and thin, curling into a sync arrow -->
+    <path d="M150 352 C 92 372, 62 340, 74 296 C 82 266, 104 252, 124 250"
+    fill="none" stroke="#bb9af7" stroke-width="14" stroke-linecap="round"/>
+    <path d="M150 250 L 118 228 L 118 272 Z" fill="#bb9af7" stroke="#bb9af7" stroke-width="8" stroke-linejoin="round"/>
+    <!-- feet -->
+    <g fill="#f7768e">
+    <ellipse cx="206" cy="384" rx="22" ry="11"/>
+    <ellipse cx="306" cy="384" rx="22" ry="11"/>
+    </g>
+    <!-- body: round back, tapering to a pointed snout -->
+    <path d="M136 340
+    C 128 270, 180 214, 256 214
+    C 318 214, 362 250, 400 292
+    C 418 312, 416 330, 396 340
+    C 360 360, 320 378, 256 378
+    L 176 378
+    C 150 378, 138 364, 136 340 Z" fill="#7aa2f7"/>
+    <!-- ear -->
+    <circle cx="300" cy="204" r="50" fill="#7aa2f7"/>
+    <circle cx="300" cy="204" r="30" fill="#f7768e" opacity="0.85"/>
+    <!-- eye: a block cursor -->
+    <rect x="338" y="262" width="16" height="30" rx="3" fill="#1a1b26"/>
+    <!-- nose -->
+    <circle cx="404" cy="312" r="14" fill="#f7768e"/>
+    <!-- whiskers -->
+    <g stroke="#c0caf5" stroke-width="6" stroke-linecap="round">
+    <line x1="392" y1="334" x2="452" y2="324"/>
+    <line x1="390" y1="346" x2="446" y2="358"/>
+    </g>
+    <!-- prompt on the flank -->
+    <path d="M206 284 L 236 306 L 206 328" fill="none" stroke="#1a1b26" stroke-width="14"
+    stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
