@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/SyscallBrain/ratclone/actions/workflows/ci.yml"><img src="https://github.com/SyscallBrain/ratclone/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://crates.io/crates/ratclone"><img src="https://img.shields.io/crates/v/ratclone.svg" alt="ratclone on crates.io"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
   <img src="https://img.shields.io/badge/rust-1.88%2B-orange.svg" alt="Rust 1.88+">
   <img src="https://img.shields.io/badge/platform-Linux-lightgrey.svg" alt="Platform: Linux">
