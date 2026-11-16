@@ -4,6 +4,8 @@ ratclone runs on Linux, on x86_64 and aarch64. It needs:
 
 - **rclone v1.68.0 or newer.** ratclone checks the version when it starts and
   says so if it is older.
+  Browser login inside the app needs **v1.75.0 or newer**; older supported
+  versions use the [authorization-token flow](accounts.md#browser-logins).
 - A terminal with truecolor and a [Nerd Font](https://www.nerdfonts.com) for
   the icons. Without one, set `icons = "ascii"` in the
   [configuration](configuration.md) or in the settings (`,`).

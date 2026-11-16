@@ -97,7 +97,16 @@ pub async fn record_outcomes(backend: &dyn Backend, path: &Path) {
 #[derive(serde::Deserialize)]
 struct JobList {
     #[serde(rename = "runningIds", default)]
-    running: Vec<u64>,
+    running: Option<Vec<u64>>,
+    jobids: Vec<u64>,
+}
+
+impl JobList {
+    fn candidates(self) -> Vec<u64> {
+        // Older supported rclones return only jobids. Check their status below
+        // instead of treating a missing runningIds field as an idle daemon.
+        self.running.unwrap_or(self.jobids)
+    }
 }
 
 #[derive(serde::Deserialize)]
@@ -109,7 +118,7 @@ struct Mounts {
 /// Any app transfer still running, or any mount active?
 async fn busy(rc: &UnixRc) -> Result<bool, RcError> {
     let jobs: JobList = rc.call_typed("job/list", json!({})).await?;
-    for id in jobs.running {
+    for id in jobs.candidates() {
         if let Ok(s) = rc
             .call_typed::<RcJobStatus>("job/status", json!({ "jobid": id }))
             .await
@@ -121,4 +130,29 @@ async fn busy(rc: &UnixRc) -> Result<bool, RcError> {
     }
     let mounts: Mounts = rc.call_typed("mount/listmounts", json!({})).await?;
     Ok(!mounts.mount_points.is_empty())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn legacy_job_list_keeps_candidates_for_status_checks() {
+        // rclone 1.68 returns jobids but has no runningIds/finishedIds fields.
+        let jobs: JobList = serde_json::from_value(json!({
+            "executeId": "legacy", "jobids": [1, 2, 3]
+        }))
+        .unwrap();
+        assert_eq!(jobs.candidates(), vec![1, 2, 3]);
+    }
+
+    #[test]
+    fn current_job_list_limits_status_checks_to_running_jobs() {
+        let jobs: JobList = serde_json::from_value(json!({
+            "executeId": "current", "jobids": [1, 2, 3],
+            "finishedIds": [1, 3], "runningIds": [2]
+        }))
+        .unwrap();
+        assert_eq!(jobs.candidates(), vec![2]);
+    }
 }

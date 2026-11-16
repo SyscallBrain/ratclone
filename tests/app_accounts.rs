@@ -403,6 +403,28 @@ async fn dropbox_local_waits_then_done() {
 }
 
 #[tokio::test]
+async fn older_rclone_falls_back_to_token_without_losing_account() {
+    let (_d, f, mut app) = sidebar_app().await;
+    start_add(&mut app, "dropbox", "oldcli").await;
+    f.fail_next("config_continue_job", BackendError::LocalOAuthUnsupported);
+    press(&mut app, "<C-s>");
+    app.settle().await;
+    assert_eq!(step_name(&app), "token");
+    assert!(wizard(&app).auto_note.as_deref().unwrap().contains("1.75"));
+    assert!(f.config_of("oldcli").is_some(), "unfinished account is kept");
+
+    // Trying the browser again must still offer the usable token flow.
+    f.fail_next("config_continue_job", BackendError::LocalOAuthUnsupported);
+    press(&mut app, "L");
+    app.settle().await;
+    assert_eq!(step_name(&app), "token");
+    press(&mut app, "{\"x\":1}<CR>");
+    app.settle().await;
+    assert!(app.overlay.is_none());
+    assert!(f.config_of("oldcli").unwrap().contains_key("token"));
+}
+
+#[tokio::test]
 async fn esc_during_browser_wait_stops_and_deletes() {
     let (_d, f, mut app) = sidebar_app().await;
     f.set_auth_delay(std::time::Duration::from_secs(60));

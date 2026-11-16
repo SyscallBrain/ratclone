@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_call:
 
 permissions:
   contents: read
@@ -24,13 +25,26 @@ jobs:
           rustup toolchain install stable --profile minimal --component rustfmt --component clippy
           rustup default stable
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
-      # The tests that talk to a real `rclone rcd` skip themselves without it:
-      # install the current release so they run (the distribution's is too old).
-      - name: Install rclone
-        run: curl -fsSL https://rclone.org/install.sh | sudo bash
       - run: cargo fmt --check
-      - run: cargo clippy --all-targets -- -D warnings
-      - run: cargo test
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - name: Install minimum supported rclone
+        run: bash scripts/install-test-rclone.sh 1.68.0 "$RUNNER_TEMP/rclone-minimum"
+      - name: Test with rclone 1.68.0
+        run: |
+          export PATH="$RUNNER_TEMP/rclone-minimum:$PATH"
+          RATCLONE_TEST_RCLONE_VERSION=1.68.0 cargo test --locked
+      - name: Install current rclone release
+        run: bash scripts/install-test-rclone.sh latest "$RUNNER_TEMP/rclone-current"
+      - name: Test with current rclone
+        run: |
+          export PATH="$RUNNER_TEMP/rclone-current:$PATH"
+          RATCLONE_TEST_RCLONE_VERSION=$(cat "$RUNNER_TEMP/rclone-current/version") cargo test --locked
+      - name: Install minimum rclone for cancellable browser login
+        run: bash scripts/install-test-rclone.sh 1.75.0 "$RUNNER_TEMP/rclone-oauth-minimum"
+      - name: Test browser login cancellation with rclone 1.75.0
+        run: |
+          export PATH="$RUNNER_TEMP/rclone-oauth-minimum:$PATH"
+          RATCLONE_TEST_RCLONE_VERSION=1.75.0 cargo test --locked --test rc_backend local_login_requires_cancellable_rclone_or_frees_port
 
   # Licences, advisories, banned crates and sources (deny.toml).
   supply-chain:

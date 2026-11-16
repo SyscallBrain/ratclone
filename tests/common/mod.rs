@@ -9,11 +9,54 @@ use ratclone::rc::UnixRc;
 use tempfile::TempDir;
 
 pub fn rclone_bin() -> Option<PathBuf> {
-    std::env::var_os("PATH").and_then(|paths| {
+    let binary = std::env::var_os("PATH").and_then(|paths| {
         std::env::split_paths(&paths)
             .map(|p| p.join("rclone"))
             .find(|p| p.is_file())
-    })
+    });
+    if let Ok(expected) = std::env::var("RATCLONE_TEST_RCLONE_VERSION") {
+        let binary = binary
+            .as_ref()
+            .expect("required integration-test rclone is missing from PATH");
+        let output = Command::new(binary)
+            .arg("version")
+            .output()
+            .expect("run required rclone");
+        assert!(output.status.success(), "required rclone version command failed");
+        let output = String::from_utf8(output.stdout).expect("rclone version is UTF-8");
+        assert_eq!(
+            output.lines().next(),
+            Some(format!("rclone v{expected}").as_str()),
+            "wrong integration-test rclone"
+        );
+    } else {
+        assert!(
+            std::env::var_os("GITHUB_ACTIONS").is_none(),
+            "CI must set RATCLONE_TEST_RCLONE_VERSION to require real integration tests"
+        );
+    }
+    binary
+}
+
+/// Keep test daemons independent of environment-defined remotes and credentials.
+/// The wrapper execs rclone, preserving its PID and the caller's fake-browser PATH.
+pub fn isolated_rclone(binary: &Path, directory: &Path) -> PathBuf {
+    use std::os::unix::fs::PermissionsExt;
+    let quote = |path: &Path| format!("'{}'", path.to_str().unwrap().replace('\'', "'\\''"));
+    let wrapper = directory.join("rclone-test-wrapper");
+    std::fs::write(
+        &wrapper,
+        format!(
+            "#!/bin/sh\nexec /usr/bin/env -i PATH=\"$PATH\" HOME={} XDG_CONFIG_HOME={} XDG_CACHE_HOME={} {} \"$@\"\n",
+            quote(directory),
+            quote(&directory.join("config")),
+            quote(&directory.join("cache")),
+            quote(&binary.canonicalize().unwrap()),
+        ),
+    )
+    .unwrap();
+    std::fs::set_permissions(&wrapper, std::fs::Permissions::from_mode(0o700)).unwrap();
+    wrapper
 }
 
 pub struct RcdFixture {
@@ -42,6 +85,7 @@ impl RcdFixture {
             return None;
         };
         let dir = tempfile::tempdir().unwrap();
+        let rclone = isolated_rclone(&rclone, dir.path());
         let root = dir.path().join("root");
         std::fs::create_dir(&root).unwrap();
         let conf = dir.path().join("rclone.conf");

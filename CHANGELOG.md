@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Keep background transfers running with rclone 1.68.0, whose `job/list`
+  response does not include the newer `runningIds` field.
+- Offer authorization-token login on rclone versions older than 1.75.0,
+  which cannot cancel an in-app browser login cleanly.
+
 ## [0.1.1] - 2026-11-15
 
 ### Added

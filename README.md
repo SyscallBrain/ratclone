@@ -74,6 +74,10 @@ and Ubuntu ship rclone 1.60, which is too old: install the current one from
 [rclone.org](https://rclone.org/install/) with
 `sudo -v ; curl https://rclone.org/install.sh | sudo bash`.
 
+Browser login inside the app requires **rclone v1.75.0 or newer** so it can
+be cancelled cleanly. Older supported versions automatically offer the
+authorization-token flow instead; existing accounts work as usual.
+
 Download the file for your system from the
 [latest release](https://github.com/SyscallBrain/ratclone/releases/latest).
 x86_64 packages are named `amd64` or `x86_64`, and aarch64 packages `arm64`
@@ -127,7 +131,8 @@ ratclone --rclone ~/bin/rclone
 ## How it works
 
 ratclone starts its own `rclone rcd` on a private unix socket and talks to it
-through the rc API; it never listens on a network port. Copies and moves are
+through the rc API, which is only available through that socket. Browser logins
+may temporarily open a localhost port for OAuth. Copies and moves are
 rclone jobs, so they outlive the app: a small helper records how each one ends
 and stops the rcd once they are done. See
 [How it works](https://syscallbrain.github.io/ratclone/how-it-works.html).

@@ -119,6 +119,8 @@ pub enum BackendError {
     Rclone(String),
     #[error("lost connection to rclone")]
     Disconnected,
+    #[error("browser login requires rclone 1.75 or newer; paste an authorization token instead")]
+    LocalOAuthUnsupported,
     #[error("{0}")]
     Other(String),
 }

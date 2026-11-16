@@ -14,7 +14,7 @@ use super::{
 };
 use crate::location::{Location, Remote};
 use crate::rc::types::{
-    RcAbout, RcConfigOut, RcJobId, RcJobStatus, RcList, RcListItem, RcOption, RcProviders, RcStats,
+    RcAbout, RcConfigOut, RcJobId, RcJobStatus, RcList, RcListItem, RcOption, RcProviders, RcStats, RcVersion,
 };
 use crate::rc::{RcError, UnixRc};
 use crate::transfer::spec::{FileProgress, TransferKind, TransferProgress, TransferSpec, aggregate};
@@ -591,6 +591,14 @@ impl Backend for RcBackend {
         answer: &str,
         obscure: bool,
     ) -> Result<u64, BackendError> {
+        // Before 1.75 the OAuth callback wait ignores job cancellation, leaving
+        // the job and localhost listener alive. Use the token-paste flow instead.
+        if answer == "true" {
+            let version: RcVersion = self.rc.call_typed("core/version", json!({})).await?;
+            if version.decomposed < [1, 75, 0] {
+                return Err(BackendError::LocalOAuthUnsupported);
+            }
+        }
         let mut body = continue_body(name, state, answer, obscure);
         body["_async"] = json!(true);
         let id: RcJobId = self.rc.call_typed("config/update", body).await?;
