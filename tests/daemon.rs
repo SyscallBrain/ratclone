@@ -17,6 +17,7 @@ struct Env {
 fn env() -> Option<Env> {
     let rclone = common::rclone_bin()?;
     let dir = tempfile::tempdir().unwrap();
+    let rclone = common::isolated_rclone(&rclone, dir.path());
     {
         use std::os::unix::fs::PermissionsExt;
         std::fs::set_permissions(dir.path(), std::fs::Permissions::from_mode(0o700)).unwrap();

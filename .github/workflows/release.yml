@@ -18,9 +18,16 @@ env:
   CARGO_GENERATE_RPM_VERSION: 0.21.1
 
 jobs:
+  # A local reusable workflow checks out this tag/dispatch commit. Publication
+  # cannot proceed until fmt, clippy and the full suite pass against both
+  # the minimum supported and current rclone, along with the other CI gates.
+  validate:
+    uses: ./.github/workflows/ci.yml
+
   # A static (musl) binary per architecture, each built natively, so it runs
   # on any Linux distribution whatever its glibc.
   build:
+    needs: validate
     strategy:
       matrix:
         include:

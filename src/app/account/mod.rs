@@ -791,6 +791,14 @@ impl App {
         let Some(w) = self.wizard() else { return };
         match (&mut w.step, result) {
             (Step::WaitingBrowser { jobid, .. }, Ok(id)) => *jobid = Some(id),
+            (Step::WaitingBrowser { .. }, Err(BackendError::LocalOAuthUnsupported)) => {
+                let Some(state) = w.local_state.clone() else {
+                    return self.wizard_failed(BackendError::LocalOAuthUnsupported);
+                };
+                w.local_flipped = !w.over_ssh;
+                w.auto_note = Some("Browser login needs rclone 1.75+: paste an authorization token".into());
+                self.answer_local(state, false);
+            }
             (_, Ok(id)) => self.stop_job_quietly(id),
             (_, Err(e)) => self.wizard_failed(e),
         }

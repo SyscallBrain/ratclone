@@ -1,6 +1,9 @@
 # Release checklist
 
 1. The gates are green: `cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test`.
+   The Release workflow also runs CI for the exact tag/manual-run commit and
+   blocks release builds on it, including the real integration suite with
+   rclone 1.68.0 and the current official release (see `CONTRIBUTING.md`).
 2. `CHANGELOG.md` has the release section `## [X.Y.Z] - YYYY-MM-DD`; the
    Release workflow uses it as the release notes and fails without it.
 3. The new version is in `Cargo.toml` (and `Cargo.lock`), in

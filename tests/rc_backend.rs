@@ -636,7 +636,8 @@ async fn providers_include_drive_mega_dropbox() {
             .unwrap()
             .is_password
     );
-    assert!(mega.options.iter().any(|o| o.name == "2fa"));
+    // Additional provider fields (such as Mega's 2fa) depend on rclone's
+    // version. The form renders the options returned by that rclone.
 }
 
 #[tokio::test]
@@ -752,16 +753,20 @@ async fn continue_job_runs_and_stops() {
     let _ = backend.stop_job(job).await;
 }
 
-/// Answering "use this machine's browser" starts rclone's login server; stopping the
-/// job ends it (the port is free again) and leaves no token behind.
+/// Older rclone must use the token flow; supported browser logins stop cleanly
+/// without leaving a listener or token behind.
 #[tokio::test]
-async fn local_login_job_stops_and_frees_port() {
+async fn local_login_requires_cancellable_rclone_or_frees_port() {
     let Some(f) = RcdFixture::start_with_fake_browser() else {
         return;
     };
     let backend = RcBackend::new(f.rc.clone());
     let port_open = || std::net::TcpStream::connect(("127.0.0.1", 53682)).is_ok();
     if port_open() {
+        assert!(
+            std::env::var_os("RATCLONE_TEST_RCLONE_VERSION").is_none(),
+            "required OAuth integration test cannot run: port 53682 already in use"
+        );
         eprintln!("skipping: port 53682 already in use");
         return;
     }
@@ -772,10 +777,24 @@ async fn local_login_job_stops_and_frees_port() {
     let ConfigStep::Question { state, .. } = step else {
         panic!()
     };
-    let job = backend
-        .config_continue_job("d", &state, "true", false)
-        .await
-        .unwrap();
+    let version: ratclone::rc::types::RcVersion =
+        f.rc.call_typed("core/version", serde_json::json!({}))
+            .await
+            .unwrap();
+    let started = backend.config_continue_job("d", &state, "true", false).await;
+    if version.decomposed < [1, 75, 0] {
+        assert_eq!(started, Err(BackendError::LocalOAuthUnsupported));
+        assert!(!port_open(), "unsupported login must not open a listener");
+        assert!(!f.dir.path().join("opened.txt").exists(), "browser must not open");
+        let token_step = backend
+            .config_continue("d", &state, "false", false)
+            .await
+            .unwrap();
+        assert_eq!(question_name(&token_step), "config_token");
+        assert!(!backend.remote_config("d").await.unwrap().contains_key("token"));
+        return;
+    }
+    let job = started.unwrap();
     let start = std::time::Instant::now();
     while !port_open() {
         assert!(

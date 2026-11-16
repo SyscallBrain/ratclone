@@ -5,8 +5,9 @@
 ratclone starts its own `rclone rcd`, rclone's remote-control server, on a
 private unix socket (`$XDG_RUNTIME_DIR/ratclone/rc.sock`, in a directory only
 you can open) and talks to it through the
-[rc API](https://rclone.org/rc/). It never listens on a network port, and
-never builds shell commands.
+[rc API](https://rclone.org/rc/), which is only available through that socket.
+Browser logins may temporarily open a localhost port for OAuth. ratclone never
+builds shell commands.
 
 Listing, renaming, deleting and account changes are rc calls. Copies and moves
 are rclone *jobs*, so they keep going while you browse.

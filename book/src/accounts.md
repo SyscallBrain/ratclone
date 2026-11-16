@@ -37,7 +37,10 @@ only sent if you type a new one. Only the fields you change are sent.
 
 Google Drive, Dropbox, OneDrive and other accounts log in through a browser.
 
-- **On your own computer**, the browser opens and the app waits for you.
+- **On your own computer with rclone 1.75 or newer**, the browser opens and
+  the app waits for you. Older versions cannot cancel this login reliably,
+  so the app automatically offers the authorization-token flow below. You
+  can run the displayed command in another terminal on the same computer.
 - **Over SSH** there is no browser, so the app shows the command to run on a
   machine that has one, such as `rclone authorize "dropbox"`. `y` copies it
   (through OSC 52, so it works over SSH too), and you paste the result back.
