@@ -40,6 +40,10 @@ pub fn rclone_bin() -> Option<PathBuf> {
 
 /// Keep test daemons independent of environment-defined remotes and credentials.
 /// The wrapper execs rclone, preserving its PID and the caller's fake-browser PATH.
+///
+/// It also turns off cloning: on macOS (APFS) rclone clones a local-to-local copy,
+/// which ends at once whatever the bandwidth limit, and the tests that need a copy
+/// still running throttle one. Older rclones ignore the unknown variable.
 pub fn isolated_rclone(binary: &Path, directory: &Path) -> PathBuf {
     use std::os::unix::fs::PermissionsExt;
     let quote = |path: &Path| format!("'{}'", path.to_str().unwrap().replace('\'', "'\\''"));
@@ -47,7 +51,7 @@ pub fn isolated_rclone(binary: &Path, directory: &Path) -> PathBuf {
     std::fs::write(
         &wrapper,
         format!(
-            "#!/bin/sh\nexec /usr/bin/env -i PATH=\"$PATH\" HOME={} XDG_CONFIG_HOME={} XDG_CACHE_HOME={} {} \"$@\"\n",
+            "#!/bin/sh\nexec /usr/bin/env -i PATH=\"$PATH\" HOME={} XDG_CONFIG_HOME={} XDG_CACHE_HOME={} RCLONE_LOCAL_NO_CLONE=true {} \"$@\"\n",
             quote(directory),
             quote(&directory.join("config")),
             quote(&directory.join("cache")),

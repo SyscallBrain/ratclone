@@ -12,6 +12,9 @@ All notable changes to this project are documented here. The format follows
   response does not include the newer `runningIds` field.
 - Offer authorization-token login on rclone versions older than 1.75.0,
   which cannot cancel an in-app browser login cleanly.
+- Rename a file to a change of case only (`notes.txt` to `Notes.txt`) on
+  case-insensitive filesystems, such as macOS's, where the new name was
+  reported as already in use.
 
 ## [0.1.1] - 2026-11-15
 
