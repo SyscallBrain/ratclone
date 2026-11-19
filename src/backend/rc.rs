@@ -54,6 +54,23 @@ impl RcBackend {
         RcBackend { rc, list_dir }
     }
 
+    /// Whether renaming `from` to `new_name` in `parent` only changes its case and
+    /// no other entry there has that exact name. A case-insensitive filesystem
+    /// (macOS, Windows) finds `from` itself when asked for `B.txt` and answers with
+    /// the name it was asked for, so only the folder's real names tell the two apart.
+    async fn case_change_only(
+        &self,
+        from: &Location,
+        parent: &Location,
+        new_name: &str,
+    ) -> Result<bool, BackendError> {
+        if new_name.to_lowercase() != from.name().to_lowercase() {
+            return Ok(false);
+        }
+        let entries = self.list(parent).await?;
+        Ok(!entries.iter().any(|e| e.name == new_name))
+    }
+
     /// Write `names` (one per line, relative to the source folder) for `--files-from-raw`.
     fn write_list(&self, group: &str, names: &[&str]) -> Result<PathBuf, BackendError> {
         let io = |e: std::io::Error| BackendError::Other(format!("could not write file list: {e}"));
@@ -300,6 +317,7 @@ impl Backend for RcBackend {
         // new name is a change of case only, which is fine.
         if let Some(taken) = self.stat(&to).await?
             && taken.name != from.name()
+            && !self.case_change_only(from, &parent, new_name).await?
         {
             return Err(BackendError::Other(format!(
                 "“{}” already exists here",

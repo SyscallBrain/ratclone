@@ -113,6 +113,21 @@ async fn rename_never_lands_on_another_entry() {
 }
 
 #[tokio::test]
+async fn a_change_of_case_never_lands_on_another_entry() {
+    let Some((f, backend)) = setup() else { return };
+    let root = &f.root;
+    std::fs::write(root.join("b.txt"), "b").unwrap();
+    std::fs::write(root.join("B.txt"), "keep me").unwrap();
+    // A case-insensitive filesystem (macOS) holds one file by now: nothing to clash.
+    if std::fs::read_dir(root).unwrap().count() < 2 {
+        return;
+    }
+    let e = backend.rename(&tst("b.txt"), "B.txt", false).await.unwrap_err();
+    assert!(e.to_string().contains("already exists"), "{e}");
+    assert_eq!(std::fs::read_to_string(root.join("B.txt")).unwrap(), "keep me");
+}
+
+#[tokio::test]
 async fn about_has_totals() {
     let Some((_f, backend)) = setup() else { return };
     let a = backend.about(&Remote::Named("tst".into())).await.unwrap();
