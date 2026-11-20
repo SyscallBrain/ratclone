@@ -54,6 +54,21 @@ impl RcBackend {
         RcBackend { rc, list_dir }
     }
 
+    /// Whether listing `dir` finds anything. A missing folder is a 404, or an empty
+    /// answer on bucket-based remotes (S3, B2), where folders are only name prefixes.
+    async fn lists_anything(&self, dir: &Location) -> Result<bool, BackendError> {
+        let params = json!({ "fs": dir.fs(), "remote": dir.path });
+        match self
+            .rc
+            .call_typed_with_timeout::<RcList>("operations/list", params, LIST_TIMEOUT)
+            .await
+        {
+            Ok(l) => Ok(!l.list.is_empty()),
+            Err(RcError::Api { status: 404, .. }) => Ok(false),
+            Err(e) => Err(e.into()),
+        }
+    }
+
     /// Write `names` (one per line, relative to the source folder) for `--files-from-raw`.
     fn write_list(&self, group: &str, names: &[&str]) -> Result<PathBuf, BackendError> {
         let io = |e: std::io::Error| BackendError::Other(format!("could not write file list: {e}"));
@@ -305,6 +320,23 @@ impl Backend for RcBackend {
                 "“{}” already exists here",
                 taken.name
             )));
+        }
+        // `stat` finds a folder only by its exact name. Where the filesystem ignores
+        // case (FAT, exFAT or SMB on Linux), `photos` still opens `Photos`, and moving
+        // a folder there deletes every file in it as "already at the destination",
+        // or merges into `B` when asked for `b`. A folder that lists nothing has no
+        // file to lose, and is how a missing folder answers on bucket-based remotes.
+        if is_dir && self.lists_anything(&to).await? {
+            let message = if new_name.to_lowercase() == from.name().to_lowercase() {
+                format!(
+                    "this filesystem ignores case: “{new_name}” is “{}” itself; \
+                     rename it to another name first",
+                    from.name()
+                )
+            } else {
+                format!("“{new_name}” already exists here")
+            };
+            return Err(BackendError::Other(message));
         }
         if is_dir {
             let params = json!({

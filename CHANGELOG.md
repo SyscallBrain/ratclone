@@ -12,6 +12,10 @@ All notable changes to this project are documented here. The format follows
   response does not include the newer `runningIds` field.
 - Offer authorization-token login on rclone versions older than 1.75.0,
   which cannot cancel an in-app browser login cleanly.
+- Refuse to rename a folder onto a name the filesystem treats as an existing
+  folder of another case, as on FAT, exFAT or SMB drives on Linux. Changing
+  only the case of a folder's name (`Photos` to `photos`) deleted every file in
+  it, and renaming `a` to `b` merged it into an existing `B`.
 
 ## [0.1.1] - 2026-11-15
 
