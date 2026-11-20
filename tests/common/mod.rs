@@ -113,8 +113,7 @@ impl RcdFixture {
                 .env_remove("DISPLAY")
                 .env_remove("WAYLAND_DISPLAY");
         }
-        let child = cmd
-            .args(["rcd", "--rc-no-auth", "--rc-job-expire-duration", "5m"])
+        cmd.args(["rcd", "--rc-no-auth", "--rc-job-expire-duration", "5m"])
             .arg("--rc-addr")
             .arg(format!("unix://{}", sock.display()))
             .arg("--config")
@@ -123,9 +122,8 @@ impl RcdFixture {
             .arg(dir.path().join("rcd.log"))
             .stdin(Stdio::null())
             .stdout(Stdio::null())
-            .stderr(Stdio::null())
-            .spawn()
-            .unwrap();
+            .stderr(Stdio::null());
+        let child = spawn(&mut cmd);
         wait_for_socket(&sock);
         Some(RcdFixture {
             rc: UnixRc::new(sock),
@@ -150,6 +148,24 @@ impl RcdFixture {
     }
 }
 
+/// Spawn `cmd`, retrying while its executable is "busy". Tests run in parallel: a
+/// wrapper script just written by one can still be open for writing in a child
+/// another has forked but not yet exec'd, and exec refuses such a file.
+pub fn spawn(cmd: &mut Command) -> Child {
+    let start = Instant::now();
+    loop {
+        match cmd.spawn() {
+            Err(e)
+                if e.kind() == std::io::ErrorKind::ExecutableFileBusy
+                    && start.elapsed() < Duration::from_secs(5) =>
+            {
+                std::thread::sleep(Duration::from_millis(10));
+            }
+            other => return other.unwrap(),
+        }
+    }
+}
+
 pub fn wait_for_socket(sock: &Path) {
     let start = Instant::now();
     while start.elapsed() < Duration::from_secs(5) {
@@ -165,6 +181,101 @@ impl Drop for RcdFixture {
     fn drop(&mut self) {
         let _ = self.child.kill();
         let _ = self.child.wait();
+    }
+}
+
+/// A folder whose filesystem ignores case, like a FAT drive or an SMB share on
+/// Linux: the fixture root itself where its filesystem already does (macOS),
+/// otherwise an `rclone mount --vfs-case-insensitive` of it. `None` (the test
+/// should return early) when neither is possible, as without FUSE.
+///
+/// Declare it after the fixture, so that it is unmounted before the fixture's
+/// folder is removed.
+pub struct CaseInsensitiveDir {
+    /// The folder to set up files in and hand to rclone: names in it resolve
+    /// whatever their case. Files set up straight in `backing` may not show here
+    /// (the mount keeps a listing for a while).
+    pub path: PathBuf,
+    /// Where the files really are, with their real names, for checking.
+    pub backing: PathBuf,
+    mount: Option<Child>,
+}
+
+impl CaseInsensitiveDir {
+    pub fn over(fixture: &RcdFixture) -> Option<CaseInsensitiveDir> {
+        let backing = fixture.root.clone();
+        let probe = backing.join("case-probe");
+        std::fs::write(&probe, "").unwrap();
+        let found = |dir: &Path| dir.join("CASE-PROBE").exists();
+        if found(&backing) {
+            std::fs::remove_file(&probe).unwrap();
+            return Some(CaseInsensitiveDir {
+                path: backing.clone(),
+                backing,
+                mount: None,
+            });
+        }
+        let path = fixture.dir.path().join("case-insensitive");
+        std::fs::create_dir(&path).unwrap();
+        // The fixture's own wrapper: writing another one while other tests spawn
+        // theirs can fail an exec with "Text file busy".
+        let rclone = fixture.dir.path().join("rclone-test-wrapper");
+        let mut child = spawn(
+            Command::new(rclone)
+                .arg("mount")
+                .args([&backing, &path])
+                .args(["--config", "/dev/null", "--vfs-case-insensitive"])
+                // Writes go straight to the backing folder.
+                .args(["--vfs-cache-mode", "off"])
+                .stdin(Stdio::null())
+                .stdout(Stdio::null())
+                .stderr(Stdio::null()),
+        );
+        let start = Instant::now();
+        while start.elapsed() < Duration::from_secs(5) {
+            if found(&path) {
+                std::fs::remove_file(&probe).unwrap();
+                return Some(CaseInsensitiveDir {
+                    path,
+                    backing,
+                    mount: Some(child),
+                });
+            }
+            if child.try_wait().unwrap().is_some() {
+                break;
+            }
+            std::thread::sleep(Duration::from_millis(50));
+        }
+        let _ = child.kill();
+        let _ = child.wait();
+        eprintln!("skipping: no case-insensitive filesystem (FUSE unavailable?)");
+        None
+    }
+}
+
+impl Drop for CaseInsensitiveDir {
+    fn drop(&mut self) {
+        let Some(child) = &mut self.mount else { return };
+        // Killed while mounted, rclone would leave a dead mount behind.
+        for fusermount in ["fusermount3", "fusermount"] {
+            let unmounted = Command::new(fusermount)
+                .arg("-u")
+                .arg(&self.path)
+                .stderr(Stdio::null())
+                .status();
+            if unmounted.is_ok_and(|s| s.success()) {
+                break;
+            }
+        }
+        let start = Instant::now();
+        while start.elapsed() < Duration::from_secs(5) {
+            if child.try_wait().unwrap().is_some() {
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(50));
+        }
+        let _ = child.kill();
+        let _ = child.wait();
     }
 }
 

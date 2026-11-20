@@ -1,6 +1,6 @@
 mod common;
 
-use common::RcdFixture;
+use common::{CaseInsensitiveDir, RcdFixture};
 use ratclone::backend::rc::RcBackend;
 use ratclone::backend::{Backend, BackendError, RemoteInfo};
 use ratclone::location::{Location, Remote};
@@ -110,6 +110,107 @@ async fn rename_never_lands_on_another_entry() {
     // A change of case only is a rename like any other.
     backend.rename(&tst("b.txt"), "B.txt", false).await.unwrap();
     assert!(root.join("B.txt").exists());
+}
+
+// rclone moves a folder into whatever folder the new name finds. Where the
+// filesystem ignores case, `photos` finds `Photos` itself and the move deletes
+// every file in it, or finds `B` when asked for `b`.
+
+#[tokio::test]
+async fn a_change_of_case_never_empties_a_folder() {
+    let Some((f, backend)) = setup() else { return };
+    let Some(ci) = CaseInsensitiveDir::over(&f) else {
+        return;
+    };
+    std::fs::create_dir(ci.path.join("Photos")).unwrap();
+    std::fs::write(ci.path.join("Photos/a.jpg"), "keep me").unwrap();
+    let photos = Location::new(Remote::Local, &ci.path.join("Photos").display().to_string());
+    let e = backend.rename(&photos, "photos", true).await.unwrap_err();
+    assert!(e.to_string().contains("ignores case"), "{e}");
+    let names: Vec<_> = std::fs::read_dir(&ci.backing)
+        .unwrap()
+        .map(|e| e.unwrap().file_name())
+        .collect();
+    assert_eq!(names, ["Photos"]);
+    assert_eq!(
+        std::fs::read_to_string(ci.backing.join("Photos/a.jpg")).unwrap(),
+        "keep me"
+    );
+    // The way the message suggests: through another name.
+    let at = |name: &str| Location::new(Remote::Local, &ci.path.join(name).display().to_string());
+    backend.rename(&at("Photos"), "Photos.tmp", true).await.unwrap();
+    backend.rename(&at("Photos.tmp"), "photos", true).await.unwrap();
+    let names: Vec<_> = std::fs::read_dir(&ci.backing)
+        .unwrap()
+        .map(|e| e.unwrap().file_name())
+        .collect();
+    assert_eq!(names, ["photos"]);
+    assert_eq!(
+        std::fs::read_to_string(ci.backing.join("photos/a.jpg")).unwrap(),
+        "keep me"
+    );
+}
+
+#[tokio::test]
+async fn a_folder_rename_never_merges_into_another_case() {
+    let Some((f, backend)) = setup() else { return };
+    let Some(ci) = CaseInsensitiveDir::over(&f) else {
+        return;
+    };
+    std::fs::create_dir(ci.path.join("a")).unwrap();
+    std::fs::create_dir(ci.path.join("B")).unwrap();
+    std::fs::write(ci.path.join("a/x.txt"), "a").unwrap();
+    std::fs::write(ci.path.join("B/x.txt"), "keep me").unwrap();
+    let a = Location::new(Remote::Local, &ci.path.join("a").display().to_string());
+    let e = backend.rename(&a, "b", true).await.unwrap_err();
+    assert!(e.to_string().contains("already exists"), "{e}");
+    assert_eq!(std::fs::read_to_string(ci.backing.join("a/x.txt")).unwrap(), "a");
+    assert_eq!(
+        std::fs::read_to_string(ci.backing.join("B/x.txt")).unwrap(),
+        "keep me"
+    );
+}
+
+#[tokio::test]
+async fn a_folder_changes_case_where_the_filesystem_keeps_case() {
+    let Some((f, backend)) = setup() else { return };
+    let root = &f.root;
+    std::fs::create_dir(root.join("Photos")).unwrap();
+    std::fs::write(root.join("Photos/a.jpg"), "a").unwrap();
+    // On a case-insensitive filesystem (macOS) `photos` is `Photos`: nothing to test.
+    if root.join("photos").exists() {
+        return;
+    }
+    backend.rename(&tst("Photos"), "photos", true).await.unwrap();
+    assert_eq!(std::fs::read_to_string(root.join("photos/a.jpg")).unwrap(), "a");
+    assert!(!root.join("Photos").exists());
+}
+
+#[tokio::test]
+async fn a_folder_renames_on_a_bucket_based_remote() {
+    let Some((f, backend)) = setup() else { return };
+    // A missing folder lists as empty there, rather than as not found.
+    f.add_section("[mem]\ntype = memory\n");
+    let mem = |p: &str| Location::new(Remote::Named("mem".into()), p);
+    let a = f.root.join("a.jpg");
+    std::fs::write(&a, "a").unwrap();
+    let params = serde_json::json!({
+        "srcFs": f.root.display().to_string(), "srcRemote": "a.jpg",
+        "dstFs": "mem:", "dstRemote": "bucket/Photos/a.jpg",
+    });
+    f.rc.call("operations/copyfile", params).await.unwrap();
+    backend
+        .rename(&mem("bucket/Photos"), "photos", true)
+        .await
+        .unwrap();
+    let names: Vec<_> = backend
+        .list(&mem("bucket"))
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|e| e.name)
+        .collect();
+    assert_eq!(names, ["photos"]);
 }
 
 #[tokio::test]
