@@ -81,8 +81,8 @@ pub fn truncate_middle(s: &str, width: usize) -> String {
 
 /// `"14:05"` today, `"Aug 01"` this year, `"2024-08-01"` otherwise.
 pub fn short_time_in(t: Timestamp, now: Timestamp, tz: &TimeZone) -> String {
-    let t = t.to_zoned(tz.clone());
-    let now = now.to_zoned(tz.clone());
+    let t = t.to_zoned_datetime(tz.clone());
+    let now = now.to_zoned_datetime(tz.clone());
     if t.date() == now.date() {
         t.strftime("%H:%M").to_string()
     } else if t.year() == now.year() {
