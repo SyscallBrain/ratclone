@@ -350,7 +350,7 @@ fn activity_lines(app: &App, width: u16) -> Vec<Line<'static>> {
         }
     }
     lines.push(Line::raw(""));
-    let today = jiff::Timestamp::now().to_zoned(app.tz.clone()).date();
+    let today = jiff::Timestamp::now().to_zoned_datetime(app.tz.clone()).date();
     let done: Vec<_> = app
         .store
         .records
@@ -358,7 +358,7 @@ fn activity_lines(app: &App, width: u16) -> Vec<Line<'static>> {
         .filter(|r| r.state == RecordState::Done)
         .filter(|r| {
             r.finished
-                .is_some_and(|f| f.to_zoned(app.tz.clone()).date() == today)
+                .is_some_and(|f| f.to_zoned_datetime(app.tz.clone()).date() == today)
         })
         .collect();
     let bytes: u64 = done.iter().map(|r| r.bytes).sum();
@@ -421,7 +421,10 @@ fn selected_lines(app: &App, width: u16) -> Vec<Line<'static>> {
         lines.push(row(t, "Type", e.mime.clone(), width));
     }
     if let Some(m) = e.mod_time {
-        let s = m.to_zoned(app.tz.clone()).strftime("%Y-%m-%d %H:%M").to_string();
+        let s = m
+            .to_zoned_datetime(app.tz.clone())
+            .strftime("%Y-%m-%d %H:%M")
+            .to_string();
         lines.push(row(t, "Modified", s, width));
     }
     if let Some(size) = e.size.filter(|_| !e.is_dir) {
